@@ -1,5 +1,8 @@
 // import { MONGODB_URI } from "./config.js";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 const database_url = process.env.MONGODB_URI;
 
 // top level await

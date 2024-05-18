@@ -4,6 +4,9 @@ import { expressMiddleware } from "@apollo/server/express4";
 import cors from "cors";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 let io;
 const _port = process.env.PORT || 4000;
