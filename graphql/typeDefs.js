@@ -63,8 +63,8 @@ export const typeDefs = gql`
       lugar: String!
       fecha: String! # estado: Boolean
       hora: String!
-      file: Upload
-      rutaUrl: String
+      imgUrl: String
+      ruta: String
     ): Evento
     delEvento(_id: ID!): Evento
     uptEvento(
@@ -76,7 +76,7 @@ export const typeDefs = gql`
       fecha: String
       hora: String
       imgUrl: String
-      rutaUrl: String
+      ruta: String
     ): Evento
     actEvento(_id: ID!, estado: String!): Evento
 
@@ -191,8 +191,6 @@ export const typeDefs = gql`
     usuario: Usuario
   }
 
-  scalar Upload
-
   type Evento {
     _id: ID
     nombre: String
@@ -203,8 +201,6 @@ export const typeDefs = gql`
     fecha: String
     hora: String
     estado: String
-    imgUrl: String
-    rutaUrl: String
     createdAt: String
     updatedAt: String
     categorias: [Categoria] # para listar las categorias en el Evento
