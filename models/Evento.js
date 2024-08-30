@@ -34,7 +34,13 @@ const eventoSchema = new mongoose.Schema(
     estado: {
       type: String,
     },
-    // foto
+    imgUrl: {
+      type: String,
+      // no requerido para actualizar luego
+    },
+    rutaUrl: {
+      type: String
+    },
     resultado: {
       type: String,
     },

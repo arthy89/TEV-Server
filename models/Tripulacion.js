@@ -21,11 +21,7 @@ const tripulacionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    autoMarca: {
-      type: String,
-      required: true,
-    },
-    autoModelo: {
+    auto: {
       type: String,
       required: true,
     },

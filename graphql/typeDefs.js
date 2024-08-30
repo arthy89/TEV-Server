@@ -63,6 +63,8 @@ export const typeDefs = gql`
       lugar: String!
       fecha: String! # estado: Boolean
       hora: String!
+      file: Upload
+      rutaUrl: String
     ): Evento
     delEvento(_id: ID!): Evento
     uptEvento(
@@ -73,10 +75,12 @@ export const typeDefs = gql`
       lugar: String
       fecha: String
       hora: String
+      imgUrl: String
+      rutaUrl: String
     ): Evento
     actEvento(_id: ID!, estado: String!): Evento
 
-    # CATS del EVENTO
+    # CATEGORIAS del EVENTO
     crearCat(nombre: String!, eventoId: ID!): Categoria
     delCat(_id: ID!): Categoria
 
@@ -122,8 +126,7 @@ export const typeDefs = gql`
       navegante: ID!
       eventoId: ID!
       categoria: String!
-      autoMarca: String!
-      autoModelo: String!
+      auto: String!
       autoNum: String!
       equipoNombre: String
     ): Tripulacion
@@ -132,8 +135,7 @@ export const typeDefs = gql`
       piloto: ID
       navegante: ID
       categoria: String
-      autoMarca: String
-      autoModelo: String
+      auto: String!
       autoNum: String
       equipoNombre: String
     ): Tripulacion
@@ -189,6 +191,8 @@ export const typeDefs = gql`
     usuario: Usuario
   }
 
+  scalar Upload
+
   type Evento {
     _id: ID
     nombre: String
@@ -199,6 +203,8 @@ export const typeDefs = gql`
     fecha: String
     hora: String
     estado: String
+    imgUrl: String
+    rutaUrl: String
     createdAt: String
     updatedAt: String
     categorias: [Categoria] # para listar las categorias en el Evento
@@ -250,8 +256,7 @@ export const typeDefs = gql`
     navegante: Competidor
     evento: Evento
     categoria: String
-    autoMarca: String
-    autoModelo: String
+    auto: String
     autoNum: String
     equipoNombre: String
     createdAt: String

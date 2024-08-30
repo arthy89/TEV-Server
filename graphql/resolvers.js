@@ -14,7 +14,17 @@ import bcrypt from "bcrypt";
 import { createAccessToken } from "../libs/jwt.js";
 import { verificarToken } from "../middlewares/verificarToken.js";
 
+import { GraphQLUpload } from 'graphql-upload';
+import { createWriteStream, existsSync, mkdirSync } from 'fs';
+import path from "path";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export const resolvers = {
+  Upload: GraphQLUpload, // Resolver para Upload
+
   Query: {
     roles: async () => await Rol.find(),
     orgs: async () => await Org.find(),
@@ -116,8 +126,37 @@ export const resolvers = {
     //* EVENTOS
     crearEvento: async (
       _,
-      { nombre, tipo, descripcion, orgId, lugar, fecha, hora }
+      { nombre, tipo, descripcion, orgId, lugar, fecha, hora, file, rutaUrl }
     ) => {
+      
+      let imgUrl;
+
+      // Manejar la subida del archivo
+      if (file) {
+        const { createReadStream, filename } = await file;
+
+        // Crear una ruta para guardar el archivo en el servidor
+        const storagePath = path.join(__dirname, "../storage");
+
+        // Verificar si el directorio de almacenamiento existe, si no, crear el directorio
+        if (!existsSync(storagePath)) {
+          mkdirSync(storagePath, { recursive: true });
+        }
+
+        const filePath = path.join(storagePath, filename);
+
+        // Guardar el archivo en el servidor
+        await new Promise((resolve, reject) => {
+          createReadStream()
+            .pipe(createWriteStream(filePath))
+            .on("finish", resolve)
+            .on("error", reject);
+        });
+
+        // Crear la URL de la imagen que se guardará en la base de datos
+        imgUrl = `/storage/${filename}`;
+      }
+
       const evento = new Evento({
         nombre,
         tipo,
@@ -126,7 +165,10 @@ export const resolvers = {
         lugar,
         fecha,
         hora,
+        imgUrl,
+        rutaUrl,
       });
+
       const savedEvento = await evento.save();
       return savedEvento;
     },
@@ -268,8 +310,7 @@ export const resolvers = {
         navegante,
         eventoId,
         categoria,
-        autoMarca,
-        autoModelo,
+        auto,
         autoNum,
         equipoNombre,
       }
@@ -279,8 +320,7 @@ export const resolvers = {
         navegante,
         eventoId,
         categoria,
-        autoMarca,
-        autoModelo,
+        auto,
         autoNum,
         equipoNombre,
       });
